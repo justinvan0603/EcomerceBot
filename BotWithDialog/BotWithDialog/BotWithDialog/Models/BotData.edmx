@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BOT_ANSWER">
+          <Key>
+            <PropertyRef Name="ANSWER_ID" />
+          </Key>
+          <Property Name="ANSWER_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CONTENT" Type="nvarchar" MaxLength="500" />
+          <Property Name="QUESTION_ID" Type="int" />
+          <Property Name="NEXTANSWER_ID" Type="int" />
+          <Property Name="IS_END" Type="bit" />
+          <Property Name="RECORD_STATUS" Type="int" />
+        </EntityType>
+        <EntityType Name="BOT_CUSTOMERINFO">
+          <Key>
+            <PropertyRef Name="CUSTOMER_ID" />
+          </Key>
+          <Property Name="CUSTOMER_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOMAIN_ID" Type="int" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="100" />
+          <Property Name="PHONE" Type="nvarchar" MaxLength="20" />
+          <Property Name="RECORD_STATUS" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'E:\USERS\JT1\DOCUMENTS\VISUAL STUDIO 2015\BOTWITHDIALOG\BOTWITHDIALOG\APP_DATA\BOTDB.MDF.dbo.BOT_CUSTOMERREPLY' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="BOT_CUSTOMERREPLY">
+          <Property Name="CUSTOMER_ID" Type="int" />
+          <Property Name="QUESTION_ID" Type="int" />
+          <Property Name="CONTENT" Type="nvarchar" MaxLength="500" />
+          <Property Name="REPLY_TIME" Type="datetime" />
+        </EntityType>-->
+        <EntityType Name="BOT_DOMAIN">
+          <Key>
+            <PropertyRef Name="DOMAIN_ID" />
+          </Key>
+          <Property Name="DOMAIN_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOMAIN" Type="nvarchar" MaxLength="100" />
+          <Property Name="RECORD_STATUS" Type="int" />
+        </EntityType>
+        <EntityType Name="BOT_QUESTION">
+          <Key>
+            <PropertyRef Name="QUESTION_ID" />
+          </Key>
+          <Property Name="QUESTION_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CONTENT" Type="nvarchar" MaxLength="200" />
+          <Property Name="QUESTION_TYPE" Type="int" />
+          <Property Name="SCENARIO_ID" Type="int" />
+          <Property Name="PREVQUESTION_ID" Type="int" />
+          <Property Name="IS_END" Type="bit" />
+          <Property Name="RECORD_STATUS" Type="int" />
+          <Property Name="PREVANSWER_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="BOT_QUESTIONTYPE">
+          <Key>
+            <PropertyRef Name="QUESTIONTYPE_ID" />
+          </Key>
+          <Property Name="QUESTIONTYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QUESTION_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="RECORD_STATUS" Type="int" />
+        </EntityType>
+        <EntityType Name="BOT_SCENARIO">
+          <Key>
+            <PropertyRef Name="SCENARIO_ID" />
+          </Key>
+          <Property Name="SCENARIO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="DOMAIN_ID" Type="int" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="RECORD_STATUS" Type="int" />
+        </EntityType>
+        <EntityType Name="BOT_USER">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="PASSWORD" Type="nvarchar" MaxLength="100" />
+          <Property Name="RECORD_STATUS" Type="int" />
+        </EntityType>
+        <EntityContainer Name="BotDBModelStoreContainer">
+          <EntitySet Name="BOT_ANSWER" EntityType="Self.BOT_ANSWER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOT_CUSTOMERINFO" EntityType="Self.BOT_CUSTOMERINFO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOT_DOMAIN" EntityType="Self.BOT_DOMAIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOT_QUESTION" EntityType="Self.BOT_QUESTION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOT_QUESTIONTYPE" EntityType="Self.BOT_QUESTIONTYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOT_SCENARIO" EntityType="Self.BOT_SCENARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOT_USER" EntityType="Self.BOT_USER" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BotDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BotDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BOT_ANSWER" EntityType="BotDBModel.BOT_ANSWER" />
+          <EntitySet Name="BOT_CUSTOMERINFO" EntityType="BotDBModel.BOT_CUSTOMERINFO" />
+          <EntitySet Name="BOT_DOMAIN" EntityType="BotDBModel.BOT_DOMAIN" />
+          <EntitySet Name="BOT_QUESTIONTYPE" EntityType="BotDBModel.BOT_QUESTIONTYPE" />
+          <EntitySet Name="BOT_SCENARIO" EntityType="BotDBModel.BOT_SCENARIO" />
+          <EntitySet Name="BOT_USER" EntityType="BotDBModel.BOT_USER" />
+          <EntitySet Name="BOT_QUESTION" EntityType="BotDBModel.BOT_QUESTION" />
+        </EntityContainer>
+        <EntityType Name="BOT_ANSWER">
+          <Key>
+            <PropertyRef Name="ANSWER_ID" />
+          </Key>
+          <Property Name="ANSWER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CONTENT" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="QUESTION_ID" Type="Int32" />
+          <Property Name="NEXTANSWER_ID" Type="Int32" />
+          <Property Name="IS_END" Type="Boolean" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BOT_CUSTOMERINFO">
+          <Key>
+            <PropertyRef Name="CUSTOMER_ID" />
+          </Key>
+          <Property Name="CUSTOMER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOMAIN_ID" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BOT_DOMAIN">
+          <Key>
+            <PropertyRef Name="DOMAIN_ID" />
+          </Key>
+          <Property Name="DOMAIN_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOMAIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BOT_QUESTIONTYPE">
+          <Key>
+            <PropertyRef Name="QUESTIONTYPE_ID" />
+          </Key>
+          <Property Name="QUESTIONTYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QUESTION_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BOT_SCENARIO">
+          <Key>
+            <PropertyRef Name="SCENARIO_ID" />
+          </Key>
+          <Property Name="SCENARIO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DOMAIN_ID" Type="Int32" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BOT_USER">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PASSWORD" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BOT_QUESTION">
+          <Key>
+            <PropertyRef Name="QUESTION_ID" />
+          </Key>
+          <Property Name="QUESTION_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CONTENT" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="QUESTION_TYPE" Type="Int32" />
+          <Property Name="SCENARIO_ID" Type="Int32" />
+          <Property Name="PREVQUESTION_ID" Type="Int32" />
+          <Property Name="IS_END" Type="Boolean" />
+          <Property Name="RECORD_STATUS" Type="Int32" />
+          <Property Name="PREVANSWER_ID" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BotDBModelStoreContainer" CdmEntityContainer="BotDBEntities">
+          <EntitySetMapping Name="BOT_ANSWER">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_ANSWER">
+              <MappingFragment StoreEntitySet="BOT_ANSWER">
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="IS_END" ColumnName="IS_END" />
+                <ScalarProperty Name="NEXTANSWER_ID" ColumnName="NEXTANSWER_ID" />
+                <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+                <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+                <ScalarProperty Name="ANSWER_ID" ColumnName="ANSWER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOT_CUSTOMERINFO">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_CUSTOMERINFO">
+              <MappingFragment StoreEntitySet="BOT_CUSTOMERINFO">
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DOMAIN_ID" ColumnName="DOMAIN_ID" />
+                <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOT_DOMAIN">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_DOMAIN">
+              <MappingFragment StoreEntitySet="BOT_DOMAIN">
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="DOMAIN" ColumnName="DOMAIN" />
+                <ScalarProperty Name="DOMAIN_ID" ColumnName="DOMAIN_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOT_QUESTIONTYPE">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_QUESTIONTYPE">
+              <MappingFragment StoreEntitySet="BOT_QUESTIONTYPE">
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="QUESTION_TYPE" ColumnName="QUESTION_TYPE" />
+                <ScalarProperty Name="QUESTIONTYPE_ID" ColumnName="QUESTIONTYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOT_SCENARIO">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_SCENARIO">
+              <MappingFragment StoreEntitySet="BOT_SCENARIO">
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="DOMAIN_ID" ColumnName="DOMAIN_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="SCENARIO_ID" ColumnName="SCENARIO_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOT_USER">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_USER">
+              <MappingFragment StoreEntitySet="BOT_USER">
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOT_QUESTION">
+            <EntityTypeMapping TypeName="BotDBModel.BOT_QUESTION">
+              <MappingFragment StoreEntitySet="BOT_QUESTION">
+                <ScalarProperty Name="PREVANSWER_ID" ColumnName="PREVANSWER_ID" />
+                <ScalarProperty Name="RECORD_STATUS" ColumnName="RECORD_STATUS" />
+                <ScalarProperty Name="IS_END" ColumnName="IS_END" />
+                <ScalarProperty Name="PREVQUESTION_ID" ColumnName="PREVQUESTION_ID" />
+                <ScalarProperty Name="SCENARIO_ID" ColumnName="SCENARIO_ID" />
+                <ScalarProperty Name="QUESTION_TYPE" ColumnName="QUESTION_TYPE" />
+                <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+                <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
