@@ -15,8 +15,13 @@ namespace BotDBService.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int USERID { get; set; }
+        [StringLength(50)]
         public string USERNAME { get; set; }
+        [StringLength(100)]
         public string PASSWORD { get; set; }
         public Nullable<int> RECORD_STATUS { get; set; }
+        public Nullable<int> DOMAIN_ID { get; set;}
+        [StringLength(100)]
+        public string DOMAIN_NAME { get; set; }
     }
 }

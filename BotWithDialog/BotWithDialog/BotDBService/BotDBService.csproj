@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DAO\DAO_ANSWER.cs" />
     <Compile Include="DAO\DAO_CUSTOMERINFO.cs" />
+    <Compile Include="DAO\DAO_DOMAIN.cs" />
     <Compile Include="DAO\DAO_QUESTION.cs" />
     <Compile Include="DAO\DAO_QUESTIONTYPE.cs" />
     <Compile Include="DAO\DAO_SCENARIO.cs" />
@@ -70,6 +71,38 @@
     <Compile Include="Migrations\201703090806168_ac.Designer.cs">
       <DependentUpon>201703090806168_ac.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703100213258_ChatBotDBUpdate.cs" />
+    <Compile Include="Migrations\201703100213258_ChatBotDBUpdate.Designer.cs">
+      <DependentUpon>201703100213258_ChatBotDBUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703100648243_UpdateFORMTYPE.cs" />
+    <Compile Include="Migrations\201703100648243_UpdateFORMTYPE.Designer.cs">
+      <DependentUpon>201703100648243_UpdateFORMTYPE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703100652455_CreateTableCUSTOMERREPLY.cs" />
+    <Compile Include="Migrations\201703100652455_CreateTableCUSTOMERREPLY.Designer.cs">
+      <DependentUpon>201703100652455_CreateTableCUSTOMERREPLY.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703100658556_UpdateTableCUSTOMERREPLY.cs" />
+    <Compile Include="Migrations\201703100658556_UpdateTableCUSTOMERREPLY.Designer.cs">
+      <DependentUpon>201703100658556_UpdateTableCUSTOMERREPLY.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703100709096_UpdateTableQUESTION.cs" />
+    <Compile Include="Migrations\201703100709096_UpdateTableQUESTION.Designer.cs">
+      <DependentUpon>201703100709096_UpdateTableQUESTION.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703130346023_UpdateTableColumn.cs" />
+    <Compile Include="Migrations\201703130346023_UpdateTableColumn.Designer.cs">
+      <DependentUpon>201703130346023_UpdateTableColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703140340525_UpdTableStringColumn.cs" />
+    <Compile Include="Migrations\201703140340525_UpdTableStringColumn.Designer.cs">
+      <DependentUpon>201703140340525_UpdTableStringColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703140409295_UpdTableUser.cs" />
+    <Compile Include="Migrations\201703140409295_UpdTableUser.Designer.cs">
+      <DependentUpon>201703140409295_UpdTableUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -83,6 +116,30 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703090806168_ac.resx">
       <DependentUpon>201703090806168_ac.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703100213258_ChatBotDBUpdate.resx">
+      <DependentUpon>201703100213258_ChatBotDBUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703100648243_UpdateFORMTYPE.resx">
+      <DependentUpon>201703100648243_UpdateFORMTYPE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703100652455_CreateTableCUSTOMERREPLY.resx">
+      <DependentUpon>201703100652455_CreateTableCUSTOMERREPLY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703100658556_UpdateTableCUSTOMERREPLY.resx">
+      <DependentUpon>201703100658556_UpdateTableCUSTOMERREPLY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703100709096_UpdateTableQUESTION.resx">
+      <DependentUpon>201703100709096_UpdateTableQUESTION.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703130346023_UpdateTableColumn.resx">
+      <DependentUpon>201703130346023_UpdateTableColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703140340525_UpdTableStringColumn.resx">
+      <DependentUpon>201703140340525_UpdTableStringColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703140409295_UpdTableUser.resx">
+      <DependentUpon>201703140409295_UpdTableUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

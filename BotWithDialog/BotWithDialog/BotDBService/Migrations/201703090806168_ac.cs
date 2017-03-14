@@ -12,7 +12,7 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         ANSWER_ID = c.Int(nullable: false, identity: true),
-                        CONTENT = c.String(),
+                        CONTENT = c.String(nullable:false,maxLength:500),
                         QUESTION_ID = c.Int(),
                         PREVANSWER_ID = c.Int(),
                         IS_END = c.Boolean(),
@@ -26,10 +26,10 @@ namespace BotDBService.Migrations
                     {
                         CUSTOMER_ID = c.Int(nullable: false, identity: true),
                         DOMAIN_ID = c.Int(),
-                        DOMAIN_NAME = c.String(),
-                        NAME = c.String(),
-                        EMAIL = c.String(),
-                        PHONE = c.String(),
+                        DOMAIN_NAME = c.String(nullable:false,maxLength:100),
+                        NAME = c.String(nullable: false, maxLength: 100),
+                        EMAIL = c.String(nullable: false, maxLength: 100),
+                        PHONE = c.String(nullable: false, maxLength: 20),
                         RECORD_STATUS = c.Int(),
                     })
                 .PrimaryKey(t => t.CUSTOMER_ID);
@@ -39,7 +39,7 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         DOMAIN_ID = c.Int(nullable: false, identity: true),
-                        DOMAIN = c.String(),
+                        DOMAIN = c.String(nullable: false, maxLength: 100),
                         RECORD_STATUS = c.Int(),
                     })
                 .PrimaryKey(t => t.DOMAIN_ID);
@@ -49,9 +49,9 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         FORM_ID = c.Int(nullable: false, identity: true),
-                        FROM_NAME = c.String(),
+                        FROM_NAME = c.String(nullable: false, maxLength: 100),
                         DOMAIN_ID = c.Int(),
-                        DOMAIN_NAME = c.String(),
+                        DOMAIN_NAME = c.String(nullable: false, maxLength: 100),
                     })
                 .PrimaryKey(t => t.FORM_ID);
             
@@ -60,11 +60,11 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         QUESTION_ID = c.Int(nullable: false, identity: true),
-                        CONTENT = c.String(),
+                        CONTENT = c.String(nullable: false, maxLength: 500),
                         QUESTION_TYPE = c.Int(),
                         SCENARIO_ID = c.Int(),
                         DOMAIN_ID = c.Int(),
-                        DOMAIN_NAME = c.String(),
+                        DOMAIN_NAME = c.String(nullable: false, maxLength: 100),
                         PREVQUESTION_ID = c.Int(),
                         IS_END = c.Boolean(),
                         RECORD_STATUS = c.Int(),
@@ -77,7 +77,7 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         QUESTIONTYPE_ID = c.Int(nullable: false, identity: true),
-                        QUESTION_TYPE = c.String(),
+                        QUESTION_TYPE = c.String(nullable: false, maxLength: 100),
                         RECORD_STATUS = c.Int(),
                     })
                 .PrimaryKey(t => t.QUESTIONTYPE_ID);
@@ -87,9 +87,9 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         SCENARIO_ID = c.Int(nullable: false, identity: true),
-                        NAME = c.String(),
+                        NAME = c.String(nullable: false, maxLength: 100),
                         DOMAIN_ID = c.Int(),
-                        DOMAIN_NAME = c.String(),
+                        DOMAIN_NAME = c.String(nullable: false, maxLength: 100),
                         IS_ACTIVE = c.Boolean(),
                         RECORD_STATUS = c.Int(),
                     })
@@ -100,8 +100,8 @@ namespace BotDBService.Migrations
                 c => new
                     {
                         USERID = c.Int(nullable: false, identity: true),
-                        USERNAME = c.String(),
-                        PASSWORD = c.String(),
+                        USERNAME = c.String(nullable: false, maxLength: 50),
+                        PASSWORD = c.String(nullable: false, maxLength: 100),
                         RECORD_STATUS = c.Int(),
                     })
                 .PrimaryKey(t => t.USERID);

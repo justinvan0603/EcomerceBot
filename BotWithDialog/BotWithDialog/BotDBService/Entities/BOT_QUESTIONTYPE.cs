@@ -13,6 +13,7 @@ namespace BotDBService.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int QUESTIONTYPE_ID { get; set; }
+        [StringLength(100)]
         public string QUESTION_TYPE { get; set; }
         public Nullable<int> RECORD_STATUS { get; set; }
     }

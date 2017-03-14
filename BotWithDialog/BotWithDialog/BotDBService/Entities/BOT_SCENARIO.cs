@@ -13,9 +13,10 @@ namespace BotDBService.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SCENARIO_ID { get; set; }
-        
+        [StringLength(100)]
         public string NAME { get; set; }
         public Nullable<int> DOMAIN_ID { get; set; }
+        [StringLength(100)]
         public string DOMAIN_NAME { get; set; }
         public Nullable<bool> IS_ACTIVE { get; set; }
         public Nullable<int> RECORD_STATUS { get; set; }

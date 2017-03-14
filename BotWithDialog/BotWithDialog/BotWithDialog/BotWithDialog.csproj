@@ -186,6 +186,7 @@
       <DependentUpon>BotData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FormDialog_Models\CustomerInfoFormModel.cs" />
+    <Compile Include="Models\FormDialog_Models\CustomerReplyFormModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

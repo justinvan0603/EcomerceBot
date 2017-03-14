@@ -15,11 +15,16 @@ namespace BotDBService.Entities
         public int CUSTOMER_ID { get; set; }
 
         public Nullable<int> DOMAIN_ID { get; set; }
+        [StringLength(100)]
         public string DOMAIN_NAME { get; set; }
+        [StringLength(100)]
         public string NAME { get; set; }
+        [StringLength(100)]
         public string EMAIL { get; set; }
+        [StringLength(20)]
         public string PHONE { get; set; }
 
         public Nullable<int> RECORD_STATUS { get; set; }
+        
     }
 }

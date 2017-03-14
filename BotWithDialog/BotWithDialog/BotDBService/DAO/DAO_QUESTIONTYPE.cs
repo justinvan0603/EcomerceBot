@@ -32,6 +32,22 @@ namespace BotDBService.DAO
                 return null;
             }
         }
+        public static bool BOT_QUESTIONTYPE_IsGetInfoQuestion(int QUESTION_TYPE)
+        {
+            try
+            {
+                if (QUESTION_TYPE == 1)
+                    return true;
+                else
+                    return false;
+                
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
 
     }
 }

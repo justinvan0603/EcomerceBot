@@ -15,11 +15,11 @@ namespace BotDBService.DAO
                 BotDBContext context = new BotDBContext();
                 if(DOMAIN_ID != null)
                 {
-                    return context.BOT_SCENARIO.Where(sc => sc.SCENARIO_ID == DOMAIN_ID && sc.RECORD_STATUS == 1);
+                    return context.BOT_SCENARIO.Where(sc => sc.SCENARIO_ID == DOMAIN_ID && sc.RECORD_STATUS == 1 && sc.IS_ACTIVE == true);
                 }
                 else
                 {
-                    return context.BOT_SCENARIO.Where(sc => sc.DOMAIN_NAME.Contains(DOMAIN_NAME) && sc.RECORD_STATUS == 1);
+                    return context.BOT_SCENARIO.Where(sc => sc.DOMAIN_NAME.Contains(DOMAIN_NAME) && sc.RECORD_STATUS == 1 && sc.IS_ACTIVE == true);
                 }
             }
             catch(Exception ex)

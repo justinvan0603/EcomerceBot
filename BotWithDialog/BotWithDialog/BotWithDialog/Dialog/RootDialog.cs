@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using BotWithDialog.Models;
+using BotDBService.Entities;
+using BotDBService.DAO;
 using System.Threading;
-
 using Microsoft.Bot.Builder.FormFlow;
+using BotWithDialog.Models.FormDialog_Models;
 
 namespace BotWithDialog.Dialog
 {
@@ -16,9 +17,9 @@ namespace BotWithDialog.Dialog
     public class RootDialog : IDialog<object>
     {
 
-        private  BuildFormDelegate<Models.BOT_CUSTOMERINFO> MakeCustomerInfoForm;
+        private  BuildFormDelegate<Models.FormDialog_Models.CustomerInfoFormModel> MakeCustomerInfoForm;
 
-        internal void CustomerInfoDialog(BuildFormDelegate<Models.BOT_CUSTOMERINFO> makeCustomerInfoForm)
+        internal void CustomerInfoDialog(BuildFormDelegate<Models.FormDialog_Models.CustomerInfoFormModel> makeCustomerInfoForm)
         {
             
             this.MakeCustomerInfoForm = makeCustomerInfoForm;
@@ -27,45 +28,38 @@ namespace BotWithDialog.Dialog
 
         public async Task StartAsync(IDialogContext context)
         {
-
-            //   string Url = context.ConversationData.Get<string>("ServiceUrl");
-
-            context.Wait(MessageReceiveAsync);
-           // var message = await activity;
-            //BotDBEntities DbContext = new BotDBEntities();
-            //List<BOT_QUESTION> listFirstQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
-
-            //PromptDialog.Choice(context, this.ResumeAfterFirst, listFirstQuestion, "", "Không hợp lệ", 3, PromptStyle.Auto);
+             context.Wait(MessageReceiveAsync);
+            
+           
         }
         public async Task MessageReceiveAsync(IDialogContext context, IAwaitable<IMessageActivity> activity)
         {
-           // await context.PostAsync("Chào mừng bạn đã đến với Website của chúng tôi");
+            // await context.PostAsync("Chào mừng bạn đã đến với Website của chúng tôi");
             var message = await activity;
+            
 
-           // List<BotDBService.Entities.BOT_SCENARIO> listScenario = DAO_SCENARIO.BOT_SCENARIO_GetByDomain(null, message.ServiceUrl).ToList();
+            //<--**--Bao gio chay thuc te thi mo dong nay ra--**-->
+            //BOT_DOMAIN domain = DAO_DOMAIN.GetById(null, message.ServiceUrl);
+         //   context.PrivateConversationData.SetValue<int>("DOMAIN_ID", domain.DOMAIN_ID);
+           // context.PrivateConversationData.SetValue<string>("DOMAIN_NAME", message.ServiceUrl);
+            //  List<BotDBService.Entities.BOT_SCENARIO> listScenario = DAO_SCENARIO.BOT_SCENARIO_GetByDomain(null, message.ServiceUrl).ToList();
 
 
 
-           // List<BotDBService.Entities.BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(listScenario[0].SCENARIO_ID).ToList();
-
-
-            BotDBEntities DbContext = new BotDBEntities();
-            List<BOT_QUESTION> listFirstQuestion =  DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
+            List<BotDBService.Entities.BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
             await this.ShowListQuestion(context,listFirstQuestion);
-            //PromptDialog.Choice(context, this.ResumeAfterFirst, listFirstQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
-            // await context.PostAsync("You said " + message.Text);
-            //   PromptDialog.Confirm(context, ResumeAfterConfirm, "Choose the one");
+
 
         }
         
         private async Task ShowListQuestion(IDialogContext context, List<BOT_QUESTION> listQuestion)
         {
+            
             PromptDialog.Choice(context, this.ResumeAfterChooseQuestion, listQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
         }
 
         private async Task ShowListAnswer(IDialogContext context, List<BOT_ANSWER> listAnswer)
         {
-
             //PromptDialog.Choice(context, this.ResumeAfterChooseAnswer, listAnswer, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.AutoText);
             if(listAnswer.All(answer => answer.IS_END.Value == true))
             {
@@ -73,39 +67,131 @@ namespace BotWithDialog.Dialog
                 {
                     await context.PostAsync(item.CONTENT);
                 }
-                BotDBEntities DbContext = new BotDBEntities();
-                await context.PostAsync("Nếu bạn có thắc mắc gì mời bạn chọn tiếp các câu hỏi");
-                List<BOT_QUESTION> listFirstQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
 
+                //BotDBEntities DbContext = new BotDBEntities();
+                await context.PostAsync("Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc mời bạn chọn tiếp các câu hỏi");
+                List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
+                //List<BOT_QUESTION> listFirstQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
+                context.PrivateConversationData.Clear();
+                
                 await this.ShowListQuestion(context, listFirstQuestion);
-               // PromptDialog.Choice(context, this.ResumeAfterFirst, listFirstQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
+               //PromptDialog.Choice(context, this.ResumeAfterFirst, listFirstQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
 
             }
+            else
+            {
+                
+                
+                //await this.ShowListAnswer(context, listAnswer);
+                //await this.ShowListAnswer(context, listAnswer);
+                PromptDialog.Choice(context, this.ResumeAfterChooseAnswer, listAnswer, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
+            }
             
+        }
+        public async Task ShowPreviousSelectionFromCurrentQuestion(IDialogContext context, BOT_QUESTION currentQuestion)
+        {
+            if(currentQuestion.PREVQUESTION_ID != null)
+            {
+                //List<BOT_QUESTION> listPrevQuestion = DAO_QUESTION.BOT_QUESTION_GetByPrevQuestionId(currentQuestion.PREVQUESTION_ID.Value).ToList();
+                //await ShowListQuestion(context, listPrevQuestion);
+                    List<BOT_QUESTION> listPrevQuestions = DAO_QUESTION.BOT_QUESTION_GetPreviousSelectQuestions(currentQuestion.PREVQUESTION_ID.Value).ToList();
+                    await ShowListQuestion(context, listPrevQuestions);
+            }
+            else
+            {
+                if(currentQuestion.LEVEL == 1)
+                {
+                    List<BOT_QUESTION> listPrevQuestions = DAO_QUESTION.BOT_QUESTION_GetByLevel(currentQuestion.LEVEL.Value).ToList();
+                    await ShowListQuestion(context, listPrevQuestions);
+                }
+            }
+            if(currentQuestion.PREVANSWER_ID != null)
+            {
+                List<BOT_ANSWER> listPrevAnswers = DAO_ANSWER.BOT_ANSWER_GetByPreviousSelectAnswers(currentQuestion.PREVANSWER_ID.Value).ToList();
+                await ShowListAnswer(context, listPrevAnswers);
+                // List<BOT_ANSWER> listPrevAnswer
+            }
+        }
+        public async Task ShowPreviousSelectionFromCurrentAnswer(IDialogContext context, BOT_ANSWER currentAnswer)
+        {
+            if(currentAnswer.QUESTION_ID != null)
+            {
+                List<BOT_QUESTION> listPrevQuestions = DAO_QUESTION.BOT_QUESTION_GetPreviousSelectQuestions(currentAnswer.QUESTION_ID.Value).ToList();
+                await ShowListQuestion(context, listPrevQuestions);
+            }
+            if(currentAnswer.PREVANSWER_ID != null)
+            {
+                List<BOT_ANSWER> listPrevAnswers = DAO_ANSWER.BOT_ANSWER_GetByPreviousSelectAnswers(currentAnswer.PREVANSWER_ID.Value).ToList();
+                await ShowListAnswer(context, listPrevAnswers);
+            }
         }
         public async Task ResumeAfterChooseQuestion(IDialogContext context, IAwaitable<BOT_QUESTION> result)
         {
             var value = await result;
             if(value != null)
             {
-                BotDBEntities DbContext = new BotDBEntities();
+                if(value.QUESTION_ID == -1)
+                {
+                    BOT_QUESTION prevQuestion = DAO_QUESTION.BOT_QUESTION_GetById(value.PREVQUESTION_ID.Value);
+                    await ShowPreviousSelectionFromCurrentQuestion(context, prevQuestion);
+                }
+                //BotDBEntities DbContext = new BotDBEntities();
+                BotDBService.Entities.BotDBContext DbContext = new BotDBContext();
                 if(DbContext.BOT_ANSWER.Any(answer => answer.QUESTION_ID == value.QUESTION_ID))
                 {
                     List<BOT_ANSWER> ListAnswer = DbContext.BOT_ANSWER.Where(answer => answer.QUESTION_ID == value.QUESTION_ID).ToList();
+                    BOT_ANSWER backAnswer = new BOT_ANSWER();
+                    backAnswer.ANSWER_ID = -1;
+                    backAnswer.QUESTION_ID = value.QUESTION_ID;
+                    backAnswer.IS_END = true;
+                    backAnswer.LEVEL = -1;
+                    backAnswer.RECORD_STATUS = -1;
+                    backAnswer.CONTENT = "<-Quay lại";
+                    backAnswer.PREVANSWER_ID = -1;
+                    backAnswer.RECORD_STATUS = -1;
+                    ListAnswer.Add(backAnswer);
                     await ShowListAnswer(context, ListAnswer);
                     //PromptDialog.Choice(context, this.ResumeAfterChooseAnswer,ListAnswer, "Click để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
                 }
                 if(DbContext.BOT_QUESTION.Any(question => question.PREVQUESTION_ID == value.QUESTION_ID))
                 {
                     List<BOT_QUESTION> ListQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == value.QUESTION_ID).ToList();
+
+                  //  if(value.LEVEL  1)
+                 ///   {
+                    BOT_QUESTION backQuestion = new BOT_QUESTION();
+                    backQuestion.QUESTION_ID = -1;
+                    backQuestion.CONTENT = "<-Quay lại";
+                    backQuestion.DOMAIN_ID = -1;
+                    backQuestion.FORM_ID = -1;
+                    backQuestion.IS_END = true;
+                    backQuestion.PREVANSWER_ID = -1;
+                    backQuestion.PREVQUESTION_ID = value.QUESTION_ID;
+                    backQuestion.QUESTION_TYPE = -1;
+                    backQuestion.RECORD_STATUS = -1;
+                    backQuestion.SCENARIO_ID = -1;
+                    backQuestion.LEVEL = -1;
+                    backQuestion.QUESTION_ID = -1;
+                    ListQuestion.Add(backQuestion);
+                  // }
+
                     await this.ShowListQuestion(context, ListQuestion);
                 }
-                if(value.QUESTION_TYPE.Value == 1)
+                if(DAO_QUESTIONTYPE.BOT_QUESTIONTYPE_IsGetInfoQuestion(value.QUESTION_TYPE.Value))
                 {
-                    var customerInfoForm = new FormDialog<Models.BOT_CUSTOMERINFO>(new Models.BOT_CUSTOMERINFO(), MakeCustomerInfoForm, FormOptions.PromptInStart);
-                    context.Call(customerInfoForm, CustomerInfoFormCompleted);
+                    if (value.FORM_NAME.Equals(typeof(CustomerInfoFormModel).Name))
+                    {
+                        var customerInfoForm = new FormDialog<Models.FormDialog_Models.CustomerInfoFormModel>(new Models.FormDialog_Models.CustomerInfoFormModel(value), CustomerInfoFormModel.BuildForm, FormOptions.PromptInStart);
+                        context.Call(customerInfoForm, CustomerInfoFormCompleted);
+                    }
+                    else if( value.FORM_NAME.Equals(typeof(CustomerReplyFormModel).Name))
+                    {
+                        var customerReplyForm = new FormDialog<Models.FormDialog_Models.CustomerReplyFormModel>(new Models.FormDialog_Models.CustomerReplyFormModel(), CustomerReplyFormModel.BuildForm, FormOptions.PromptInStart);
+                        context.Call(customerReplyForm,CustomerReplyFormCompleted);
+                    }
 
                 }
+                
 
             }
             else
@@ -115,14 +201,53 @@ namespace BotWithDialog.Dialog
             }
 
         }
-        public async Task CustomerInfoFormCompleted(IDialogContext context,IAwaitable<Models.BOT_CUSTOMERINFO> result )
+        public async Task CustomerReplyFormCompleted(IDialogContext context , IAwaitable<Models.FormDialog_Models.CustomerReplyFormModel> result)
         {
             var value = await result;
             if(value != null)
             {
-                await context.PostAsync($"Cảm ơn bạn {value.NAME} đã cung cấp thông tin. Chúng tội sẽ chủ động liên lạc với bạn");
                 
-                context.Wait(MessageReceiveAsync);
+            }
+        }
+        public async Task CustomerInfoFormCompleted(IDialogContext context,IAwaitable<Models.FormDialog_Models.CustomerInfoFormModel> result )
+        {
+            var value = await result;
+            if(value != null)
+            {
+                //int domain_id = context.PrivateConversationData.Get<int>("DOMAIN_ID");
+               // string domain = context.PrivateConversationData.Get<string>("DOMAIN_NAME");
+                
+                BOT_CUSTOMERINFO customerInfo = new BOT_CUSTOMERINFO();
+                customerInfo.DOMAIN_ID = 1;
+                customerInfo.DOMAIN_NAME = "http://google.com.vn";
+                customerInfo.CUSTOMER_ID = 0;
+                customerInfo.NAME = value.NAME;
+                customerInfo.PHONE = value.PHONE;
+                customerInfo.EMAIL = value.EMAIL;
+                customerInfo.RECORD_STATUS = 1;
+                DAO_CUSTOMERINFO.BOT_CUSTOMERINFO_Ins(customerInfo);
+                context.PrivateConversationData.SetValue<int>("CUSTOMER_ID", customerInfo.CUSTOMER_ID);
+                //context.PrivateConversationData.RemoveValue("DOMAIN_ID");
+                //context.PrivateConversationData.RemoveValue("DOMAIN_NAME");
+                if (value.GetQuestion().IS_END == true)
+                {
+                    await context.PostAsync($"Cảm ơn bạn {value.NAME} đã cung cấp thông tin. Chúng tôi sẽ chủ động liên lạc với bạn");
+                    await context.PostAsync($"Nếu {value.NAME} có vấn đề gì thắc mắc xin mời chọn câu hỏi");
+                    context.Wait(MessageReceiveAsync);
+                }
+                else
+                {
+                    if(DAO_QUESTION.BOT_QUESTION_IsHaveNextQuestions(value.GetQuestion().QUESTION_ID))
+                    {
+                        List<BOT_QUESTION> listQuestion = DAO_QUESTION.BOT_QUESTION_GetByPrevQuestionId(value.GetQuestion().QUESTION_ID).ToList();
+                        await this.ShowListQuestion(context, listQuestion);
+                    }
+                    if(DAO_ANSWER.BOT_ANSWER_IsHasAnswer(value.GetQuestion().QUESTION_ID))
+                    {
+                        List<BOT_ANSWER> listAnswer = DAO_ANSWER.BOT_ANSWER_GetByQuestionId(value.GetQuestion().QUESTION_ID).ToList();
+                        await this.ShowListAnswer(context, listAnswer);
+                    }
+                }
             }
             
         }
@@ -131,86 +256,55 @@ namespace BotWithDialog.Dialog
             var value = await result;
             if(value != null)
             {
-                BotDBEntities DbContext = new BotDBEntities();
-                if(DbContext.BOT_ANSWER.Any(answer => answer.ANSWER_ID == value.NEXTANSWER_ID))
+                BotDBService.Entities.BotDBContext DbContext = new BotDBContext();
+                //BotDBEntities DbContext = new BotDBEntities();
+                if(DbContext.BOT_ANSWER.Any(answer => answer.PREVANSWER_ID == value.ANSWER_ID))
                 {
-                    List<BOT_ANSWER> ListAnswer = DbContext.BOT_ANSWER.Where(answer => answer.ANSWER_ID == value.NEXTANSWER_ID).ToList();
+
+                    List<BOT_ANSWER> ListAnswer = DbContext.BOT_ANSWER.Where(answer => answer.PREVANSWER_ID == value.ANSWER_ID).ToList();
+                    BOT_ANSWER backAnswer = new BOT_ANSWER();
+                    backAnswer.ANSWER_ID = -1;
+                    backAnswer.QUESTION_ID = value.QUESTION_ID;
+                    backAnswer.IS_END = true;
+                    backAnswer.LEVEL = -1;
+                    backAnswer.RECORD_STATUS = -1;
+                    backAnswer.CONTENT = "<-Quay lại";
+                    backAnswer.PREVANSWER_ID = -1;
+                    backAnswer.RECORD_STATUS = -1;
+                    ListAnswer.Add(backAnswer);
                     await ShowListAnswer(context, ListAnswer);
                  
                 }
                 if(DbContext.BOT_QUESTION.Any(question=> question.PREVANSWER_ID == value.ANSWER_ID))
                 {
                     List<BOT_QUESTION> ListQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVANSWER_ID == value.ANSWER_ID).ToList();
+                    BOT_QUESTION backQuestion = new BOT_QUESTION();
+                    backQuestion.QUESTION_ID = -1;
+                    backQuestion.CONTENT = "<-Quay lại";
+                    backQuestion.DOMAIN_ID = -1;
+                    backQuestion.FORM_ID = -1;
+                    backQuestion.IS_END = true;
+                    backQuestion.PREVANSWER_ID = -1;
+                    backQuestion.PREVQUESTION_ID = value.QUESTION_ID;
+                    backQuestion.QUESTION_TYPE = -1;
+                    backQuestion.RECORD_STATUS = -1;
+                    backQuestion.SCENARIO_ID = -1;
+                    backQuestion.LEVEL = -1;
+                    backQuestion.QUESTION_ID = -1;
+                    ListQuestion.Add(backQuestion);
                     await ShowListQuestion(context, ListQuestion);
+                }
+                if(value.IS_END.Value == true)
+                {
+                    await context.PostAsync("Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc gì mời bạn chọn tiếp các câu hỏi nhé");
+                    List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
+
+
+                    await this.ShowListQuestion(context, listFirstQuestion);
                 }
                 
             }
 
         }
-        //public async Task ResumeAfterFirst(IDialogContext context ,IAwaitable<BOT_QUESTION> result )
-        //{
-        //    var value = await result;
-        //    if (value != null)
-        //    {
-        //        BotDBEntities DbContext = new BotDBEntities();
-
-        //        if (DbContext.BOT_QUESTION.Any(question => question.PREVQUESTION_ID == value.QUESTION_ID))
-        //        {
-        //            List<BOT_QUESTION> listQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == value.QUESTION_ID).ToList();
-        //           await ShowListQuestion(context, listQuestion);
-
-        //        }
-        //        if (value.QUESTION_TYPE.Value == 1)
-        //        {
-        //            var customerInfoForm = new FormDialog<Models.FormDialog_Models.CustomerInfoFormModel>(new Models.FormDialog_Models.CustomerInfoFormModel(), MakeCustomerInfoForm, FormOptions.PromptInStart);
-                    
-        //            context.Call(customerInfoForm, CustomerInfoFormCompleted);
-        //        }
-
-        //    }
-        //    else
-        //    {
-
-        //        context.Wait(this.MessageReceiveAsync);
-        //    }
-
-        //}
-        //public async Task ResumeAfterChoose(IDialogContext context, IAwaitable<object> result)
-        //{
-        //    context.Wait(this.MessageReceiveAsync);
-        //}
-        //private void ShowOptions(IDialogContext context)
-        //{
-        //    List<Option> ListOptions = Option.CreateListOption();
-
-        //    PromptDialog.Choice(context, this.OnOptionSelected, ListOptions, "Are you looking for a flight or a hotel?", "Not a valid option", 3,PromptStyle.Auto);
-        //}
-        //private async Task OnOptionSelected(IDialogContext context, IAwaitable<Option> result)
-        //{
-        //    try
-        //    {
-
-        //        Option optionSelected = await result;
-
-        //        switch (optionSelected.Text )
-        //        {
-        //            case "A":
-        //                {
-        //                    await context.PostAsync($"You've choose {optionSelected.ID}");
-        //                    context.Call(new RootDialog(), this.ResumeAfterChoose);
-        //                    break;
-        //                }
-        //            default: { context.Wait(MessageReceiveAsync); break; }
-        //        }
-        //    }
-        //    catch (TooManyAttemptsException ex)
-        //    {
-        //        await context.PostAsync($"Ooops! Too many attemps :(. But don't worry, I'm handling that exception and you can try again!");
-
-        //        context.Wait(this.MessageReceiveAsync);
-        //    }
-        //}
-
-
     }
 }
