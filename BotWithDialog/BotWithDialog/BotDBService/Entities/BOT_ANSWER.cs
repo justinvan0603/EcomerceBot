@@ -21,6 +21,9 @@ namespace BotDBService.Entities
         public Nullable<int> PREVANSWER_ID { get; set; }
         public Nullable<bool> IS_END { get; set; }
         public Nullable<int> RECORD_STATUS { get; set; }
+        public Nullable<int> FORM_ID { get; set; }
+        [StringLength(100)]
+        public string FORM_NAME { get; set; }
         public override string ToString()
         {
             return CONTENT;

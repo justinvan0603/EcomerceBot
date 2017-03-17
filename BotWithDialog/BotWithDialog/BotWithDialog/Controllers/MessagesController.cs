@@ -28,7 +28,6 @@ namespace BotWithDialog
         //}
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            
             if (activity.Type == ActivityTypes.Message)
             {
                 
@@ -36,6 +35,7 @@ namespace BotWithDialog
                 //BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
                 //    BotData userData = await stateClient.BotState.GetConversationDataAsync(activity.ChannelId,activity.Conversation.Id);
                 //  userData.SetProperty<string>("ServiceUrl", "http://google.com.vn");
+
                 await Conversation.SendAsync(activity, () => new RootDialog());
                 //Url = activity.ServiceUrl;
                // await Conversation.SendAsync(activity,MakeRootDialog);

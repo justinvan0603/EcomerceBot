@@ -8,6 +8,18 @@ namespace BotDBService.DAO
 {
     public class DAO_ANSWER
     {
+        public static BOT_ANSWER BOT_ANSWER_GetById(int id)
+        {
+            try
+            {
+                BotDBContext context = new BotDBContext();
+                return context.BOT_ANSWER.Single(answer => answer.ANSWER_ID == id);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
         public static IEnumerable<BOT_ANSWER> BOT_ANSWER_GetByPreviousSelectAnswers(int prevAnswerId)
         {
             try

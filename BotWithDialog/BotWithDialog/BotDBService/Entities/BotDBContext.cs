@@ -27,6 +27,7 @@ namespace BotDBService.Entities
             modelBuilder.Entity<BOT_SCENARIO>().Property(customer => customer.DOMAIN_NAME).IsOptional();
             modelBuilder.Entity<BOT_USER>().Property(user => user.USERNAME).IsOptional();
             modelBuilder.Entity<BOT_USER>().Property(user => user.PASSWORD).IsOptional();
+            
             // throw new UnintentionalCodeFirstException();
         }
 
@@ -39,5 +40,7 @@ namespace BotDBService.Entities
         public virtual DbSet<BOT_QUESTION> BOT_QUESTION { get; set; }
         public virtual DbSet<BOT_FORMTYPE> BOT_FORMTYPE { get; set; }
         public virtual DbSet<BOT_CUSTOMERREPLY> BOT_CUSTOMERREPLY { get; set; }
+        public virtual DbSet<BOT_CONVERSATION> BOT_CONVERSATION { get; set; }
+        public virtual DbSet<BOT_CONVERSATIONCONTENT> BOT_CONVERSATIONCONTENT { get; set; }
     }
 }

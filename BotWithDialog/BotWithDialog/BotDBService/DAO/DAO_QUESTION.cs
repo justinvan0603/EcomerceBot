@@ -163,14 +163,14 @@ namespace BotDBService.DAO
             //    return null;
             //}
         }
-        public static IEnumerable<BOT_QUESTION> BOT_QUESTION_GetByPrevQuestionId(int PREVQUESTION_ID)
+        public static IEnumerable<BOT_QUESTION> BOT_QUESTION_GetNextQuestions(int QUESTION_ID)
         {
             
          
                     try
                     {
                         BotDBContext context = new BotDBContext();
-                        return context.BOT_QUESTION.Where(question => question.QUESTION_ID == PREVQUESTION_ID);
+                        return context.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == QUESTION_ID);
                     }
                     catch(Exception ex)
                     {
