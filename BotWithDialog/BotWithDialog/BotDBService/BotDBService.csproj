@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DAO\DAO_ANSWER.cs" />
     <Compile Include="DAO\DAO_CONVERSATION.cs" />
+    <Compile Include="DAO\DAO_CONVERSATIONCONTENT.cs" />
     <Compile Include="DAO\DAO_CUSTOMERINFO.cs" />
     <Compile Include="DAO\DAO_DOMAIN.cs" />
     <Compile Include="DAO\DAO_QUESTION.cs" />
@@ -118,6 +119,10 @@
     <Compile Include="Migrations\201703170253416_CreateConversationContentTable.Designer.cs">
       <DependentUpon>201703170253416_CreateConversationContentTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703210353049_UpdateTableUser.cs" />
+    <Compile Include="Migrations\201703210353049_UpdateTableUser.Designer.cs">
+      <DependentUpon>201703210353049_UpdateTableUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -164,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703170253416_CreateConversationContentTable.resx">
       <DependentUpon>201703170253416_CreateConversationContentTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703210353049_UpdateTableUser.resx">
+      <DependentUpon>201703210353049_UpdateTableUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

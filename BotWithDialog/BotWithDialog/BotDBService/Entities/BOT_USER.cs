@@ -23,5 +23,6 @@ namespace BotDBService.Entities
         public Nullable<int> DOMAIN_ID { get; set;}
         [StringLength(100)]
         public string DOMAIN_NAME { get; set; }
+    
     }
 }

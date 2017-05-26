@@ -12,15 +12,28 @@ namespace BotDBService.DAO
         {
             try
             {
-                BotDBContext context = new BotDBContext();
-                if(DOMAIN_ID != null)
+                BOT_DOMAIN botDomain;
+
+                using (BotDBContext context = new BotDBContext())
                 {
-                    return context.BOT_DOMAIN.Single(domain => domain.DOMAIN_ID == DOMAIN_ID);
+                    try
+                    {
+                        if (DOMAIN_ID != null)
+                        {
+                            botDomain= context.BOT_DOMAIN.Single(domain => domain.DOMAIN_ID == DOMAIN_ID);
+                        }
+                        else
+                        {
+                            botDomain= context.BOT_DOMAIN.Single(domain => domain.DOMAIN.Contains(DOMAIN_NAME));
+                        }
+                        return botDomain;
+                    }
+                    catch(Exception ex)
+                    {
+                        return null;
+                    }
                 }
-                else
-                {
-                    return context.BOT_DOMAIN.Single(domain => domain.DOMAIN.Contains(DOMAIN_NAME));
-                }
+
             }
             catch(Exception ex)
             {

@@ -10,10 +10,23 @@ namespace BotDBService.DAO
     {
         public static IEnumerable<BOT_QUESTIONTYPE> BOT_QUESTIONTYPE_GetByAll()
         {
+
             try
             {
-                BotDBContext context = new BotDBContext();
-                return context.BOT_QUESTIONTYPE;
+                IEnumerable<BOT_QUESTIONTYPE> listQuestionType;
+
+                using (BotDBContext context = new BotDBContext())
+                {
+                    try
+                    {
+                        listQuestionType = context.BOT_QUESTIONTYPE;
+                        return listQuestionType.ToList();
+                    }
+                    catch(Exception ex)
+                    {
+                        return null;
+                    }
+                }
             }
             catch(Exception ex)
             {
@@ -24,8 +37,13 @@ namespace BotDBService.DAO
         {
             try
             {
-                BotDBContext context = new BotDBContext();
-                return context.BOT_QUESTIONTYPE.Single(type => type.QUESTIONTYPE_ID == id);
+                BOT_QUESTIONTYPE questionType;
+
+                using (BotDBContext context = new BotDBContext())
+                {
+                    questionType= context.BOT_QUESTIONTYPE.Single(type => type.QUESTIONTYPE_ID == id);
+                    return questionType;
+                }
             }
             catch(Exception ex)
             {

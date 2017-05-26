@@ -12,14 +12,28 @@ namespace BotDBService.DAO
         {
             try
             {
-                BotDBContext context = new BotDBContext();
-                if(DOMAIN_ID != null)
+                IEnumerable<BOT_SCENARIO> listScenario;
+
+                using (BotDBContext context = new BotDBContext())
                 {
-                    return context.BOT_SCENARIO.Where(sc => sc.SCENARIO_ID == DOMAIN_ID && sc.RECORD_STATUS == 1 && sc.IS_ACTIVE == true);
-                }
-                else
-                {
-                    return context.BOT_SCENARIO.Where(sc => sc.DOMAIN_NAME.Contains(DOMAIN_NAME) && sc.RECORD_STATUS == 1 && sc.IS_ACTIVE == true);
+                    try
+                    {
+                        if (DOMAIN_ID != null)
+                        {
+                            listScenario= context.BOT_SCENARIO.Where(sc => sc.SCENARIO_ID == DOMAIN_ID && sc.RECORD_STATUS == 1 && sc.IS_ACTIVE == true);
+                            
+                        }
+                        else
+                        {
+                            listScenario= context.BOT_SCENARIO.Where(sc => sc.DOMAIN_NAME.Contains(DOMAIN_NAME) && sc.RECORD_STATUS == 1 && sc.IS_ACTIVE == true);
+                            
+                        }
+                        return listScenario;
+                    }
+                    catch(Exception ex)
+                    {
+                        return null;
+                    }
                 }
             }
             catch(Exception ex)

@@ -12,10 +12,20 @@ namespace BotDBService.DAO
         {
             try
             {
-                BotDBContext context = new BotDBContext();
-                context.BOT_CUSTOMERINFO.Add(data);
-                context.SaveChanges();
-                return true;
+
+                using (BotDBContext context = new BotDBContext())
+                {
+                    try
+                    {
+                        context.BOT_CUSTOMERINFO.Add(data);
+                        context.SaveChanges();
+                        return true;
+                    }
+                    catch(Exception ex)
+                    {
+                        return false;
+                    }
+                }
             }
             catch(Exception ex)
             {

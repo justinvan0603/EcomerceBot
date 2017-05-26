@@ -17,14 +17,6 @@ namespace BotWithDialog.Dialog
     public class RootDialog : IDialog<object>
     {
 
-        //private  BuildFormDelegate<Models.FormDialog_Models.CustomerInfoFormModel> MakeCustomerInfoForm;
-
-        //internal void CustomerInfoDialog(BuildFormDelegate<Models.FormDialog_Models.CustomerInfoFormModel> makeCustomerInfoForm)
-        //{
-            
-        //    this.MakeCustomerInfoForm = makeCustomerInfoForm;
-            
-        //}
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -32,32 +24,37 @@ namespace BotWithDialog.Dialog
             
            
         }
+        private async Task<BOT_CONVERSATION> InitConversationData(int DOMAIN_ID, string DOMAIN_NAME) 
+        {
+            return DAO_CONVERSATION.BOT_CONVERSATION_CreateConversation(DOMAIN_ID, DOMAIN_NAME);
+        }
         public async Task MessageReceiveAsync(IDialogContext context, IAwaitable<IMessageActivity> activity)
         {
             // await context.PostAsync("Chào mừng bạn đã đến với Website của chúng tôi");
             var message = await activity;
-            
-            
+
+            //context.PrivateConversationData.SetValue<string>("DOMAIN_NAME", message.From.Id);
+
+
             //<--**--Bao gio chay thuc te thi mo dong nay ra--**-->
             //BOT_DOMAIN domain = DAO_DOMAIN.GetById(null, message.ServiceUrl);
             //context.PrivateConversationData.SetValue<int>("DOMAIN_ID", domain.DOMAIN_ID);
             //context.PrivateConversationData.SetValue<string>("DOMAIN_NAME", message.ServiceUrl);
             //  List<BotDBService.Entities.BOT_SCENARIO> listScenario = DAO_SCENARIO.BOT_SCENARIO_GetByDomain(null, message.ServiceUrl).ToList();
 
-            
+            //var conversation = await InitConversationData(1, "http://google.com.vn");
+            //context.PrivateConversationData.SetValue<int>("CONVERSATION_ID", conversation.ID);
 
             List<BotDBService.Entities.BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
             await this.ShowListQuestion(context,listFirstQuestion);
-
-
         }
         
         private async Task ShowListQuestion(IDialogContext context, List<BOT_QUESTION> listQuestion)
         {
-            
-            PromptDialog.Choice(context, this.ResumeAfterChooseQuestion, listQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
+      
+            PromptDialog.Choice(context, this.ResumeAfterChooseQuestion, listQuestion, "Click chuột để chọn:", "Không hợp lệ", 5, PromptStyle.Auto);
         }
-        
+
         private async Task ShowListAnswer(IDialogContext context, List<BOT_ANSWER> listAnswer)
         {
             //PromptDialog.Choice(context, this.ResumeAfterChooseAnswer, listAnswer, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.AutoText);
@@ -78,7 +75,7 @@ namespace BotWithDialog.Dialog
                 List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
                 //List<BOT_QUESTION> listFirstQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
                 context.PrivateConversationData.Clear();
-
+                
                 await this.ShowListQuestion(context, listFirstQuestion);
                //PromptDialog.Choice(context, this.ResumeAfterFirst, listFirstQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
 
@@ -86,7 +83,7 @@ namespace BotWithDialog.Dialog
             else
             {
                 
-                PromptDialog.Choice(context, this.ResumeAfterChooseAnswer, listAnswer, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
+                PromptDialog.Choice(context, this.ResumeAfterChooseAnswer, listAnswer, "Click chuột để chọn:", "Không hợp lệ", 5, PromptStyle.Auto);
             }
             
         }
@@ -178,6 +175,13 @@ namespace BotWithDialog.Dialog
                     BOT_QUESTION prevQuestion = DAO_QUESTION.BOT_QUESTION_GetById(value.PREVQUESTION_ID.Value);
                     await ShowPreviousSelectionFromCurrentQuestion(context, prevQuestion);
                 }
+                //else
+                //{
+                //    int id = context.PrivateConversationData.Get<int>("CONVERSATION_ID");
+                //    DAO_CONVERSATIONCONTENT.BOT_CONVERSATIONCONTENT_AddQuestion(id, value.QUESTION_ID, value.CONTENT);
+
+
+                //}
                 if (DAO_QUESTIONTYPE.BOT_QUESTIONTYPE_IsGetInfoQuestion(value.QUESTION_TYPE.Value))
                 {
                     if (value.FORM_NAME.Equals(typeof(CustomerInfoFormModel).Name))
@@ -238,9 +242,6 @@ namespace BotWithDialog.Dialog
 
                     await this.ShowListQuestion(context, ListQuestion);
                 }
-                
-                
-
             }
             else
             {
@@ -275,6 +276,12 @@ namespace BotWithDialog.Dialog
                 customerInfo.RECORD_STATUS = 1;
                 DAO_CUSTOMERINFO.BOT_CUSTOMERINFO_Ins(customerInfo);
                 context.PrivateConversationData.SetValue<int>("CUSTOMER_ID", customerInfo.CUSTOMER_ID);
+
+                /*Khi publish len host thi bung ra*/
+                //BOT_CONVERSATION currentConversation = DAO_CONVERSATION.BOT_CONVERSATION_GetById(context.PrivateConversationData.Get<int>("CONVERSATION_ID"));
+                //currentConversation.CUSTOMER_ID = customerInfo.CUSTOMER_ID;
+                //currentConversation.CUSTOMER_NAME = customerInfo.NAME;
+
                 //context.PrivateConversationData.RemoveValue("DOMAIN_ID");
                 //context.PrivateConversationData.RemoveValue("DOMAIN_NAME");
                 if (value.GetQuestion().IS_END == true)
@@ -309,21 +316,13 @@ namespace BotWithDialog.Dialog
                 if(value.ANSWER_ID == -1)
                 {
                     await ShowPreviousSelectionFromCurrentAnswer(context,value);
-                    //if (value.QUESTION_ID != -1)
-                    //{
-                    //    BOT_QUESTION prevQuestion = DAO_QUESTION.BOT_QUESTION_GetById(value.QUESTION_ID.Value);
-                    //    await ShowPreviousSelectionFromCurrentQuestion(context,prevQuestion);
-                    //}
-                    //else
-                    //{
-                    //    if(value.PREVANSWER_ID != -1)
-                    //    {
-                    //        BOT_ANSWER prevAnswer = DAO_ANSWER.BOT_ANSWER_GetById(value.PREVANSWER_ID.Value);
-                    //        await ShowPreviousSelectionFromCurrentAnswer(context, prevAnswer);
-                    //    }
-                    //}
-                    
                 }
+                //else
+                //{
+                //    int id = context.PrivateConversationData.Get<int>("CONVERSATION_ID");
+                //    DAO_CONVERSATIONCONTENT.BOT_CONVERSATIONCONTENT_AddAnswer(id, value.ANSWER_ID, value.CONTENT);
+
+                //}
                 //BotDBEntities DbContext = new BotDBEntities();
                 if(DbContext.BOT_ANSWER.Any(answer => answer.PREVANSWER_ID == value.ANSWER_ID))
                 {
