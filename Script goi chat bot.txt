@@ -1,0 +1,51 @@
+<script>
+    function CallWebAPI()
+    {
+       // var request = new XMLHttpRequest();
+       // request.open("get", "http://localhost:3979/api/WebChat/", false);
+       // request.setRequestHeader("Content-Type", "application/json");
+       //// request.setRequestHeader("Access-Control-Allow-Headers", "Origin,Content-Type,Accept");
+       // request.setRequestHeader("Access-Control-Allow-Origin", "*");
+       // request.send();
+       // var object = request.response;
+        //alert(JSON.parse(object).id);
+
+        var scriptResult = document.createElement("script");
+        scriptResult.async = true;
+        scriptResult.src = "http://localhost:3979/api/WebChat?domain=http://abc.com.vn";
+        scriptResult.charset = 'UTF-8';
+        scriptResult.setAttribute('crossorigin', '*');
+        scriptResult.setAttribute('Access-Control-Allow-Origin', "*");
+        var s0 = document.getElementsByTagName("script")[0];
+       // alert(scriptResult.src);
+        s0.parentNode.insertBefore(scriptResult, s0);
+        //alert(scriptResult);
+    }
+    //(function () {
+    //    var div = document.createElement('div');
+    //    document.getElementsByTagName('body')[0].appendChild(div);
+    //    div.outerHTML = '<div id="botDiv" style=" border:none;width:100%; max-width:300px;height: 38px; position: fixed;bottom:0; z-index: 9999 !important; background-color: #fff"><div id="botTitleBar" style="border:none;height: 38px;width:100%; max-width: 300px; position:fixed; cursor: pointer;""></div><iframe style="height: 400px;width:100%; max-width:300px;" src="https://webchat.botframework.com/embed/MiddleMenChatBot?s=4ND-Kx_j29A.cwA.qKI.flvpX8rIQv6VzrskLa-uS7OPONsAbmE-f9TsxJpebyE"></iframe></div>';
+
+    //    document.querySelector('body').addEventListener('click', function (e) {
+    //        e.target.matches = e.target.matches || e.target.msMatchesSelector;
+    //        if (e.target.matches('#botTitleBar')) {
+    //            var botDiv = document.querySelector('#botDiv');
+    //            botDiv.style.height = botDiv.style.height == '400px' ? '38px' : '400px';
+    //        };
+    //    });
+    //}());
+    //(function () {
+    //    var div = document.createElement('div');
+    //    document.getElementsByTagName('body')[0].appendChild(div);
+    //    div.outerHTML = '<div id="botDiv" style="height: 38px; position: fixed; bottom: 0; z-index: 9999; background-color: #fff"><div id="botTitleBar" style="height: 38px; width: 100%; position:fixed; cursor: pointer;"></div><iframe style="height:400px;" src="https://webchat.botframework.com/embed/MiddleMenChatBot?s=4ND-Kx_j29A.cwA.qKI.flvpX8rIQv6VzrskLa-uS7OPONsAbmE-f9TsxJpebyE"></iframe></div>';
+
+    //    document.querySelector('body').addEventListener('click', function (e) {
+    //        e.target.matches = e.target.matches || e.target.msMatchesSelector;
+    //        if (e.target.matches('#botTitleBar')) {
+    //            var botDiv = document.querySelector('#botDiv');
+    //            botDiv.style.height = botDiv.style.height == '400px' ? '38px' : '400px';
+    //        };
+    //    });
+    //}());
+    
+</script>
