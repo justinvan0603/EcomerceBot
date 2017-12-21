@@ -24,28 +24,27 @@ namespace BotWithDialog.Dialog
             
            
         }
-        private async Task<BOT_CONVERSATION> InitConversationData(int DOMAIN_ID, string DOMAIN_NAME) 
-        {
-            return DAO_CONVERSATION.BOT_CONVERSATION_CreateConversation(DOMAIN_ID, DOMAIN_NAME);
-        }
+        //private async Task<BOT_CONVERSATION> InitConversationData(int DOMAIN_ID, string DOMAIN_NAME) 
+        //{
+        //    return DAO_CONVERSATION.BOT_CONVERSATION_CreateConversation(DOMAIN_ID, DOMAIN_NAME);
+        //}
         public async Task MessageReceiveAsync(IDialogContext context, IAwaitable<IMessageActivity> activity)
         {
             // await context.PostAsync("Chào mừng bạn đã đến với Website của chúng tôi");
             var message = await activity;
-
-            //context.PrivateConversationData.SetValue<string>("DOMAIN_NAME", message.From.Id);
+            string domain = "http://" + message.From.Id;
+            context.PrivateConversationData.SetValue<string>("DOMAIN_NAME", domain);
 
 
             //<--**--Bao gio chay thuc te thi mo dong nay ra--**-->
-            //BOT_DOMAIN domain = DAO_DOMAIN.GetById(null, message.ServiceUrl);
+            //BOT_DOMAIN domain = DAO_DOMAIN.GetById(null, message.From.Id);
             //context.PrivateConversationData.SetValue<int>("DOMAIN_ID", domain.DOMAIN_ID);
-            //context.PrivateConversationData.SetValue<string>("DOMAIN_NAME", message.ServiceUrl);
             //  List<BotDBService.Entities.BOT_SCENARIO> listScenario = DAO_SCENARIO.BOT_SCENARIO_GetByDomain(null, message.ServiceUrl).ToList();
 
             //var conversation = await InitConversationData(1, "http://google.com.vn");
             //context.PrivateConversationData.SetValue<int>("CONVERSATION_ID", conversation.ID);
-
-            List<BotDBService.Entities.BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
+            //List<BotDBService.Entities.BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByActiveScenario("http://google.com.vn").ToList();
+            List<BotDBService.Entities.BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByActiveScenario(domain).ToList();
             await this.ShowListQuestion(context,listFirstQuestion);
         }
         
@@ -72,7 +71,7 @@ namespace BotWithDialog.Dialog
           
                 //BotDBEntities DbContext = new BotDBEntities();
                 await context.PostAsync("***Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc mời bạn chọn tiếp các câu hỏi***");
-                List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
+                List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByActiveScenario(context.PrivateConversationData.GetValue<string>("DOMAIN_NAME")).ToList();
                 //List<BOT_QUESTION> listFirstQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
                 context.PrivateConversationData.Clear();
                 
@@ -264,11 +263,11 @@ namespace BotWithDialog.Dialog
             if(value != null)
             {
                 //int domain_id = context.PrivateConversationData.Get<int>("DOMAIN_ID");
-               // string domain = context.PrivateConversationData.Get<string>("DOMAIN_NAME");
+                string domain = context.PrivateConversationData.Get<string>("DOMAIN_NAME");
                 
                 BOT_CUSTOMERINFO customerInfo = new BOT_CUSTOMERINFO();
                 customerInfo.DOMAIN_ID = 1;
-                customerInfo.DOMAIN_NAME = "http://google.com.vn";
+                customerInfo.DOMAIN_NAME = domain;
                 customerInfo.CUSTOMER_ID = 0;
                 customerInfo.NAME = value.NAME;
                 customerInfo.PHONE = value.PHONE;
@@ -364,7 +363,7 @@ namespace BotWithDialog.Dialog
                 {
                     await context.PostAsync("Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc gì mời bạn chọn tiếp các câu hỏi");
                     
-                    List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByScenario(1).ToList();
+                    List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByActiveScenario(context.PrivateConversationData.GetValue<string>("DOMAIN_NAME")).ToList();
 
 
                     await this.ShowListQuestion(context, listFirstQuestion);

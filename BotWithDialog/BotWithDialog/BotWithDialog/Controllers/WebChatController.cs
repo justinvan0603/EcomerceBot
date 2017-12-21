@@ -29,21 +29,21 @@ namespace BotWithDialog.Controllers
         public async Task<HttpResponseMessage> Get(string domain)
         {
             //int a = 5;
-            string webChatSecrect = "4ND-Kx_j29A.cwA.qKI.flvpX8rIQv6VzrskLa-uS7OPONsAbmE-f9TsxJpebyE";
+            string webChatSecrect = "w3VHr6c9kug.cwA.dgY.NbwFCdsdfTVJUQqtD8I-KGahmhbYvx7GLlDmEn4A2cc";
             var request = new HttpRequestMessage(HttpMethod.Get, "https://webchat.botframework.com/api/tokens");
             request.Headers.Add("Authorization", "BotConnector " +webChatSecrect);
 
             HttpResponseMessage response = await new HttpClient().SendAsync(request);
             string token = await response.Content.ReadAsStringAsync();
             token = token.Replace("\"", "");
-            int a = 5;
+            //int a = 5;
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
             @"(function () {
                 var div = document.createElement('div');
                 document.getElementsByTagName('body')[0].appendChild(div);
-                div.outerHTML = '<div id=""botDiv"" style="" border:none;width:100%; max-width:300px;height: 38px; position: fixed;bottom:0; z-index: 9999; background-color: #fff""><div id=""botTitleBar"" style=""border:none;height: 38px;width:100%; max-width: 300px; position:fixed; cursor: pointer;""></div><iframe style=""height: 400px;width:100%; max-width:300px;"" src=""https://webchat.botframework.com/embed/MiddleMenChatBot?t="+token+"&userid="+ domain + @"""></iframe></div>';
+                div.outerHTML = '<div id=""botDiv"" style="" border:none;width:100%; max-width:300px;height: 38px; position: fixed;bottom:0; z-index: 9999; background-color: #fff""><div id=""botTitleBar"" style=""border:none;height: 38px;width:100%; max-width: 300px; position:fixed; cursor: pointer;""></div><iframe style=""height: 400px;width:100%; max-width:300px;"" src=""https://webchat.botframework.com/embed/WordpressChatBot?s=" + webChatSecrect + "&userid="+ domain + @"""></iframe></div>';
 
                 document.querySelector('body').addEventListener('click', function(e) {
                     e.target.matches = e.target.matches || e.target.msMatchesSelector;
