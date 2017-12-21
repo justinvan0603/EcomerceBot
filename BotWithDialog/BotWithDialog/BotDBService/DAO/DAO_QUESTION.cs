@@ -199,6 +199,33 @@ namespace BotDBService.DAO
 
             
         }
+        public static IEnumerable<BOT_QUESTION> BOT_QUESTION_GetListFirstQuestionByActiveScenario(string domain)
+        {
+            try
+            {
+                IEnumerable<BOT_QUESTION> listQuestion;
+                using (BotDBContext context = new BotDBContext())
+                {
+                    try
+                    {
+                        //BotDBContext context = new BotDBContext();
+                        BOT_SCENARIO activeScenario = context.BOT_SCENARIO.Single(sc => sc.DOMAIN_NAME.Equals(domain) && sc.IS_ACTIVE.Value == true);
+                        listQuestion = context.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null && question.SCENARIO_ID == activeScenario.SCENARIO_ID);
+                        return listQuestion.ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         public static IEnumerable<BOT_QUESTION> BOT_QUESTION_GetListFirstQuestionByScenario(int SCENARIO_ID)
         {
             try

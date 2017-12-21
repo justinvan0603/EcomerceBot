@@ -123,6 +123,10 @@
     <Compile Include="Migrations\201703210353049_UpdateTableUser.Designer.cs">
       <DependentUpon>201703210353049_UpdateTableUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711261434174_UpdateDomainTable.cs" />
+    <Compile Include="Migrations\201711261434174_UpdateDomainTable.Designer.cs">
+      <DependentUpon>201711261434174_UpdateDomainTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -172,6 +176,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703210353049_UpdateTableUser.resx">
       <DependentUpon>201703210353049_UpdateTableUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711261434174_UpdateDomainTable.resx">
+      <DependentUpon>201711261434174_UpdateDomainTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

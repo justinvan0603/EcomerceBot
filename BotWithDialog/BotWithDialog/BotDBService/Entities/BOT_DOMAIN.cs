@@ -16,5 +16,6 @@ namespace BotDBService.Entities
         [StringLength(100)]
         public string DOMAIN { get; set; }
         public Nullable<int> RECORD_STATUS { get; set; }
+        public string USER_NAME { get; set; }
     }
 }

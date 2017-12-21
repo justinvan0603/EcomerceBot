@@ -10,10 +10,15 @@ namespace BotDBService.Entities
 {
     public class BotDBContext : DbContext
     {
-        public BotDBContext() : base("BotDBConnectionString")
+    //    static BotDBContext()  // runs once
+    //{
+    //    Database.SetInitializer<BotDBContext>(new CreateDatabaseIfNotExists<BotDBContext>());
+    //}
+
+    public BotDBContext() : base("BotDBConnectionString")
         {
             this.Configuration.LazyLoadingEnabled = false;
-
+            Database.SetInitializer<BotDBContext>(new CreateDatabaseIfNotExists<BotDBContext>());
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
