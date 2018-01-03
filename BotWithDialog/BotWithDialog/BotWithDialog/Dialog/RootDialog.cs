@@ -70,10 +70,10 @@ namespace BotWithDialog.Dialog
                 }
           
                 //BotDBEntities DbContext = new BotDBEntities();
-                await context.PostAsync("***Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc mời bạn chọn tiếp các câu hỏi***");
+                await context.PostAsync("***Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc mời bạn chọn tiếp***");
                 List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByActiveScenario(context.PrivateConversationData.GetValue<string>("DOMAIN_NAME")).ToList();
                 //List<BOT_QUESTION> listFirstQuestion = DbContext.BOT_QUESTION.Where(question => question.PREVQUESTION_ID == null && question.PREVANSWER_ID == null).ToList();
-                context.PrivateConversationData.Clear();
+               // context.PrivateConversationData.Clear();
                 
                 await this.ShowListQuestion(context, listFirstQuestion);
                //PromptDialog.Choice(context, this.ResumeAfterFirst, listFirstQuestion, "Click chuột để chọn:", "Không hợp lệ", 3, PromptStyle.Auto);
@@ -286,7 +286,7 @@ namespace BotWithDialog.Dialog
                 if (value.GetQuestion().IS_END == true)
                 {
                     await context.PostAsync($"Cảm ơn bạn {value.NAME} đã cung cấp thông tin. Chúng tôi sẽ chủ động liên lạc với bạn");
-                    await context.PostAsync($"Nếu {value.NAME} có vấn đề gì thắc mắc xin mời chọn câu hỏi");
+                    await context.PostAsync($"Nếu {value.NAME} có vấn đề gì thắc mắc xin mời bạn chọn");
                     context.Wait(MessageReceiveAsync);
                 }
                 else
@@ -359,9 +359,9 @@ namespace BotWithDialog.Dialog
                     ListQuestion.Add(backQuestion);
                     await ShowListQuestion(context, ListQuestion);
                 }
-                if(value.IS_END.Value == true && value.ANSWER_ID != -1)
+                if(value.IS_END.Value == true)
                 {
-                    await context.PostAsync("Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc gì mời bạn chọn tiếp các câu hỏi");
+                    await context.PostAsync("Cảm ơn bạn đã trò chuyện. Nếu bạn có thắc mắc gì mời bạn chọn tiếp");
                     
                     List<BOT_QUESTION> listFirstQuestion = DAO_QUESTION.BOT_QUESTION_GetListFirstQuestionByActiveScenario(context.PrivateConversationData.GetValue<string>("DOMAIN_NAME")).ToList();
 

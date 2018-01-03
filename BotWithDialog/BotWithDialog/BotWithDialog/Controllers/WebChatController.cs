@@ -41,9 +41,12 @@ namespace BotWithDialog.Controllers
             {
                 Content = new StringContent(
             @"(function () {
+    
+                
                 var div = document.createElement('div');
                 document.getElementsByTagName('body')[0].appendChild(div);
-                div.outerHTML = '<div id=""botDiv"" style="" border:none;width:100%; max-width:300px;height: 38px; position: fixed;bottom:0; z-index: 9999; background-color: #fff""><div id=""botTitleBar"" style=""border:none;height: 38px;width:100%; max-width: 300px; position:fixed; cursor: pointer;""></div><iframe style=""height: 400px;width:100%; max-width:300px;"" src=""https://webchat.botframework.com/embed/WordpressChatBot?s=" + webChatSecrect + "&userid="+ domain + @"""></iframe></div>';
+                
+                div.outerHTML = '<div id=""botDiv"" style="" border:none;width:100%; max-width:380px;height: 38px; position: fixed;bottom:0; z-index: 9999; background-color: #fff""><div id=""botTitleBar"" style=""border:none;height: 38px;width:100%; max-width: 380px; position:fixed; cursor: pointer;""></div><iframe style=""height: 400px;width:100%; max-width:380px;"" src=""https://webchat.botframework.com/embed/WordpressChatBot?s=" + webChatSecrect + "&userid="+ domain + @"""></iframe></div>';
 
                 document.querySelector('body').addEventListener('click', function(e) {
                     e.target.matches = e.target.matches || e.target.msMatchesSelector;
